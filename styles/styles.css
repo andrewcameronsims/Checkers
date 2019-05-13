@@ -26,6 +26,7 @@ header {
   border: solid 1px black;
   width: 45%;
   margin: 20px auto;
+  background: silver;
 }
 
 .board div:nth-child(-2n + 8),
@@ -36,15 +37,28 @@ header {
 .board div:nth-child(40) ~ div:nth-child(-2n + 47),
 .board div:nth-child(48) ~ div:nth-child(-2n + 56),
 .board div:nth-child(56) ~ div:nth-child(-2n + 63) {
-  background: #000;
+  background: beige;
 }
 
 .black-piece {
-  color: green;
+  background: black;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
 }
 
 .white-piece {
-  color: red
+  background: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
