@@ -12,6 +12,7 @@
 <body>
   <header>
     <h1 class="center">Checkers</h1>
+    <p class="center"><button onclick="resetGame()">Reset Board</button></p>
   </header>
   <div class="container">
     <div class="left-side">
@@ -19,7 +20,7 @@
     </div>
     <div class="board">
       <div class="square">
-        <div class="white-piece"></div>
+        <div class="white-piece" onclick="activatePiece(event)"></div>
       </div>
       <div class="square"></div>
       <div class="square">

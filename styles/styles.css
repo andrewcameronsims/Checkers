@@ -61,6 +61,15 @@ header {
   align-items: center;
 }
 
+/* Active Styles */
+
+.selected-piece {
+  background: blue
+}
+
+.potential-move {
+  background: lightskyblue;
+}
 
 /* Utility Classes */
 
