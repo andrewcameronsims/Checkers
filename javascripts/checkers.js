@@ -15,10 +15,17 @@ function activatePiece(e) {
   validMoves = getValidMoves(position)
 }
 
+const spawnPiece = (color) => {
+  let piece = document.createElement('div')
+  piece.classList.toggle(`.${color}-piece`)
+  piece.setAttribute('onclick', 'activatePiece()')
+  return piece
+}
+
 function removePieces() {
   // Get arrays including all pieces
-  let blacks = document.getElementsByClassName('black-piece');
-  let whites = document.getElementsByClassName('white-piece');
+  let blacks = document.querySelectorAll('.black-piece');
+  let whites = document.querySelectorAll('.white-piece');
 
   // Remove them from board
   for (let i = 1; i < blacks.length; i++) {
@@ -31,29 +38,30 @@ function removePieces() {
   }
 }
 
-function placeRow(el, row, offset) {
-  let squares = Array.prototype.slice.call( document.getElementsByClassName('square') )
+function placeRow(color, row, offset) {
+  let squares = Array.prototype.slice.call( document.querySelectorAll('.square') )
   squares = squares.slice((row * 8) - 8 + offset, (row * 8) + 1)
   for (i = 0; i < row.length; i++) {
     if ((i + 1) % 2 == 0) {
-      squares[i].innerHTML(el)
+      const piece = spawnPiece(color)
+      squares.appendChild(piece)
     }
   }
 }
 
 function placeWhites() {
-  placeRow(whitePiece, 6, 1)
-  placeRow(whitePiece, 7, 0)
-  placeRow(whitePiece, 8, 1)
+  placeRow('white', 6, 1)
+  placeRow('white', 7, 0)
+  placeRow('white', 8, 1)
 }
 
 function placeBlacks() {
-  placeRow(blackPiece, 1, 0)
-  placeRow(blackPiece, 2, 1)
-  placeRow(blackPiece, 3, 0)
+  placeRow('black', 1, 0)
+  placeRow('black', 2, 1)
+  placeRow('black', 3, 0)
 }
 
-function resetGame() {
+const resetGame = () => {
   removePieces()
   removePieces()
   removePieces()
