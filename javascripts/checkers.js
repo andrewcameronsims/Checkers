@@ -1,18 +1,15 @@
-const whitePiece = "<div class='white-piece' onclick='activatePiece(event)'></div>";
-const blackPiece = "<div class='black-piece' onclick='activatePiece(event)'></div>";
-
-function getValidMoves(position) {
+const getValidMoves = (position) => {
   // This is a stub for finding valid moves
 }
 
-function activatePiece(e) {
+const activatePiece = (e) => {
   // Get the piece and the space it is on
   let piece = e.target;
   let position = piece.parentElement;
 
-  // Toggle the styles to demonstrate the affordance
+  // Toggle the styles to demonstrate activation
   position.classList.toggle('selected-piece');
-  validMoves = getValidMoves(position)
+  validMoves = getValidMoves(position);
 }
 
 const spawnPiece = (color) => {
@@ -22,7 +19,7 @@ const spawnPiece = (color) => {
   return piece
 }
 
-function removePieces() {
+const removePieces = () => {
   // Get arrays including all pieces
   let blacks = document.querySelectorAll('.black-piece');
   let whites = document.querySelectorAll('.white-piece');
@@ -38,32 +35,28 @@ function removePieces() {
   }
 }
 
-function placeRow(color, row, offset) {
-  let squares = Array.prototype.slice.call( document.querySelectorAll('.square') )
-  squares = squares.slice((row * 8) - 8 + offset, (row * 8) + 1)
-  for (i = 0; i < row.length; i++) {
-    if ((i + 1) % 2 == 0) {
-      const piece = spawnPiece(color)
-      squares.appendChild(piece)
-    }
+const placeRow = (color, row, offset) => {
+  let allSquares = Array.prototype.slice.call( document.querySelectorAll('.square') )
+  let rowSquares = allSquares.slice((row * 8) - 8 + offset, (row * 8) + 1)
+  for (let i = 0; i < rowSquares.length; i++) {
+      const piece = spawnPiece(color);
+      rowSquares[i].appendChild(piece);
   }
 }
 
-function placeWhites() {
+const placeWhites = () => {
   placeRow('white', 6, 1)
   placeRow('white', 7, 0)
   placeRow('white', 8, 1)
 }
 
-function placeBlacks() {
+const placeBlacks = () => {
   placeRow('black', 1, 0)
   placeRow('black', 2, 1)
   placeRow('black', 3, 0)
 }
 
 const resetGame = () => {
-  removePieces()
-  removePieces()
   removePieces()
   placeWhites()
   placeBlacks()

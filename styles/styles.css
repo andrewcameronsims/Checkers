@@ -6,14 +6,19 @@
 }
 
 header {
-  background: hsl(240, 82%, 78%);
+  background: #9898f4;
   color: #000000;
   padding: 15px 0;
 }
 
 .container {
   height: 600px;
+}
+
+.left-side {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Checkers Board */
@@ -22,9 +27,9 @@ header {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  height: 100vh;
+  height: 500px;
+  width: 500px;
   border: solid 1px black;
-  width: 45%;
   margin: 50px auto;
   background: silver;
 }
