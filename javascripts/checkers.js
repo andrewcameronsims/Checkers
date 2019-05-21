@@ -10,14 +10,15 @@ const globalVariables = {
 // Grid Helpers
 
 const nextChar = (char) => {
-  return String.fromCharCode(c.charCodeAt(0) + 1);
+  return String.fromCharCode(char.charCodeAt(0) + 1);
 }
 
 const prevChar = (char) => {
-  return String.fromCharCode(c.charCodeAt(0) - 1);
+  return String.fromCharCode(char.charCodeAt(0) - 1);
 }
 
 const getDiagonals = (piece, id) => {
+  console.log(id)
   const position = id.split('/');
 
   // Get diagonals
@@ -28,10 +29,11 @@ const getDiagonals = (piece, id) => {
 
   // Error handling; we don't want positions off the board
   const checked = [u_l, u_r, l_l, l_r].map((pos) => {
-    if (!validLetters.includes(pos[0]) || !validNumbers.includes(pos[1])) {
+    if (!globalVariables.validLetters.includes(pos[0]) || 
+        !globalVariables.validNumbers.includes(pos[1])) {
       return undefined;
     } else {
-      return pos;
+      return pos.join('/');
     }
   })
 
@@ -47,17 +49,22 @@ const getDiagonals = (piece, id) => {
 
 const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
-  const position_index = position.id;
-  const diagonals = getDiagonals(position_index);
+  const diagonals = getDiagonals(piece, position.id);
+  let positions
   if (piece.classList.contains('white-piece')) {
-    const positions = [diagonals.u_l, diagonals.u_r];
+    positions = [diagonals.u_l, diagonals.u_r];
   } else if (piece.classList.contains('black-piece')){
-    const positions = [diagonals.l_l, diagonals.l_r];
+    positions = [diagonals.l_l, diagonals.l_r];
   };
+
+  // Get the elements themselves from the IDs
+  positions.map((pos) => {
+    return document.querySelector(`#${pos}`)
+  })
 
   // Add visual cues and onclicks to the valid positions
   // Can move forward diagonally if a piece is not in the way
-  positions.forEach(square => {
+  positions.forEach((square) => {
     square.classList.toggle('selected-tile');
   });
   // Can jump forward diagonally if an enemy piece present
