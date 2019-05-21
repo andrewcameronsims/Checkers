@@ -5,7 +5,7 @@ const globalVariables = {
   pieceSelected: false,
   validLetters: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
   validNumbers: [1, 2, 3, 4, 5, 6, 7, 8],
-  activePiece: null,
+  activePosition: null,
 }
 
 // Grid Helpers
@@ -79,11 +79,17 @@ const getValidMoves = (piece, position) => {
 
 const movePiece = (event) => {
   const destinationSquare = event.target;
+  const originSquare = document.querySelector(`#${globalVariables.activePosition}`)
   // Remove piece from origin square, but save its color
-  
+  const piece = originSquare.childNodes[0]
+  const pieceColor = piece.classList[0].split('-')[0]
+  originSquare.removeChild(piece)
   // Place piece on destination square
-  const piece = spawnPiece('white')
-  destinationSquare.appendChild()
+  const newPiece = spawnPiece(pieceColor)
+  destinationSquare.appendChild(newPiece)
+  flushTileHighlights();
+  globalVariables.pieceSelected = false;
+  globalVariables.activePiece = null;
 }
 
 const flushTileHighlights = () => {
@@ -101,7 +107,7 @@ const activatePiece = (e) => {
 
   if (globalVariables.pieceSelected === false) {
     globalVariables.pieceSelected = true;
-    globalVariables.activePiece = piece.id;
+    globalVariables.activePosition = position.id;
     // Toggle the styles to demonstrate activation
     position.classList.toggle('selected-tile');
     // Light up valid moves
