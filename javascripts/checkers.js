@@ -5,6 +5,7 @@ const globalVariables = {
   pieceSelected: false,
   validLetters: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
   validNumbers: [1, 2, 3, 4, 5, 6, 7, 8],
+  activePiece: null,
 }
 
 // Grid Helpers
@@ -17,7 +18,7 @@ const prevChar = (char) => {
   return String.fromCharCode(char.charCodeAt(0) - 1);
 }
 
-const getDiagonals = (piece, id) => {
+const getDiagonals = (id) => {
   const position = id.split('-');
 
   // Get diagonals
@@ -30,7 +31,7 @@ const getDiagonals = (piece, id) => {
   const checked = [u_l, u_r, l_l, l_r].map((pos) => {
     if (!globalVariables.validLetters.includes(pos[0]) || 
         !globalVariables.validNumbers.includes(pos[1])) {
-      return undefined;
+      return null;
     } else {
       return pos.join('-');
     }
@@ -48,13 +49,18 @@ const getDiagonals = (piece, id) => {
 
 const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
-  const diagonals = getDiagonals(piece, position.id);
+  const diagonals = getDiagonals(position.id);
   let positions
   if (piece.classList.contains('white-piece')) {
     positions = [diagonals.u_l, diagonals.u_r];
   } else if (piece.classList.contains('black-piece')){
     positions = [diagonals.l_l, diagonals.l_r];
   };
+  
+  // Get rid of nulls
+  positions = positions.filter((pos) => {
+    return pos
+  })
 
   // Get the elements themselves from the IDs
   positions = positions.map((pos) => {
@@ -65,9 +71,19 @@ const getValidMoves = (piece, position) => {
   // Can move forward diagonally if a piece is not in the way
   positions.forEach((square) => {
     square.classList.toggle('selected-tile');
+    square.setAttribute('onclick', 'movePiece(event)')
   });
   // Can jump forward diagonally if an enemy piece present
   // TODO
+}
+
+const movePiece = (event) => {
+  const destinationSquare = event.target;
+  // Remove piece from origin square, but save its color
+  
+  // Place piece on destination square
+  const piece = spawnPiece('white')
+  destinationSquare.appendChild()
 }
 
 const flushTileHighlights = () => {
@@ -77,6 +93,7 @@ const flushTileHighlights = () => {
   })
 }
 
+
 const activatePiece = (e) => {
   // Get the piece and the space it is on
   let piece = e.target;
@@ -84,6 +101,7 @@ const activatePiece = (e) => {
 
   if (globalVariables.pieceSelected === false) {
     globalVariables.pieceSelected = true;
+    globalVariables.activePiece = piece.id;
     // Toggle the styles to demonstrate activation
     position.classList.toggle('selected-tile');
     // Light up valid moves
@@ -92,6 +110,7 @@ const activatePiece = (e) => {
   } else if ([...position.classList].includes('selected-tile')) {
     flushTileHighlights();
     globalVariables.pieceSelected = false;
+    globalVariables.activePiece = null
   }
 }
 
