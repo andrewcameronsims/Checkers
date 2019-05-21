@@ -5,21 +5,36 @@ const globalVariables = {
   pieceSelected: false,
 }
 
+// Grid Helpers
+
+const nextChar = (char) => {
+  
+}
+
+const prevChar = (char) => {
+
+}
+
+const getDiagonals = (piece, id) => {
+  const position = id.split('/');
+  const upper_left = [nextChar(position[0]), position[1]].join('/');
+  const upper_right = [nextChar(position[0]), position[1]].join('/');
+  const lower_left = [prevChar(position[0]), position[1]].join('/');
+  const lower_right = [prevChar(position[0]), position[1]].join('/');
+  return [upper_left, upper_right, lower_left, lower_right]
+}
+
+// Game Logic
+
 const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
-  let squareList = [...document.querySelectorAll('.square')];
-  let position_index = squareList.findIndex((sq) => {
-    return sq === position;
-  });
+  const position_index = position.id;
   if (piece.classList.contains('white-piece')) {
-    let positions = [position_index - 7, position_index - 9];
+    const positions = getDiagonals(position_index).slice(0,2);
   } else if (piece.classList.contains('black-piece')){
-    let positions = [position_index + 7, position_index + 9];
+    const positions = getDiagonals(position_index).slice(2,4);
   };
 
-  positions.map((index) => {
-    return squarelist[index]
-  })
   // Add visual cues and onclicks to the valid positions
   // Can move forward diagonally if a piece is not in the way
   positions.forEach(square => {
