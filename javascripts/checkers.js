@@ -87,9 +87,10 @@ const movePiece = (event) => {
   // Place piece on destination square
   const newPiece = spawnPiece(pieceColor)
   destinationSquare.appendChild(newPiece)
-  flushTileHighlights();
   globalVariables.pieceSelected = false;
   globalVariables.activePiece = null;
+  flushTileHighlights();
+  destinationSquare.setAttribute('onclick', '')
 }
 
 const flushTileHighlights = () => {
