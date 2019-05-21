@@ -13,10 +13,10 @@ const activatePiece = (e) => {
 }
 
 const spawnPiece = (color) => {
-  let piece = document.createElement('div')
-  piece.classList.toggle(`.${color}-piece`)
-  piece.setAttribute('onclick', 'activatePiece()')
-  return piece
+  let piece = document.createElement('div');
+  piece.classList.toggle(`.${color}-piece`);
+  piece.setAttribute('onclick', 'activatePiece()');
+  return piece;
 }
 
 const removePieces = () => {
@@ -26,38 +26,27 @@ const removePieces = () => {
 
   // Remove them from board
   for (let i = 1; i < blacks.length; i++) {
-    let element = blacks[i]
-    element.parentNode.removeChild(element)
+    let element = blacks[i];
+    element.parentNode.removeChild(element);
   }
   for (let i = 1; i < whites.length; i++) {
-    let element = whites[i]
-    element.parentNode.removeChild(element)
+    let element = whites[i];
+    element.parentNode.removeChild(element);
   }
 }
 
-const placeRow = (color, row, offset) => {
-  let allSquares = Array.prototype.slice.call( document.querySelectorAll('.square') )
-  let rowSquares = allSquares.slice((row * 8) - 8 + offset, (row * 8) + 1)
-  for (let i = 0; i < rowSquares.length; i++) {
-      const piece = spawnPiece(color);
-      rowSquares[i].appendChild(piece);
+const initialiseBoard = () => {
+  // Get all squares
+  let squares = document.querySelectorAll('.square')
+
+  // Place pieces on all squares
+  for (let i = 0; i < squares.length; i++) {
+    let piece = spawnPiece('white');
+    squares[i].appendChild(piece);
   }
-}
-
-const placeWhites = () => {
-  placeRow('white', 6, 1)
-  placeRow('white', 7, 0)
-  placeRow('white', 8, 1)
-}
-
-const placeBlacks = () => {
-  placeRow('black', 1, 0)
-  placeRow('black', 2, 1)
-  placeRow('black', 3, 0)
 }
 
 const resetGame = () => {
-  removePieces()
-  placeWhites()
-  placeBlacks()
+  removePieces();
+  initialiseBoard();
 }
