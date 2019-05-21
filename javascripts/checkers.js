@@ -1,7 +1,6 @@
-const blackStarts = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22]
-const whiteStarts = [41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63]
-
-const globalVariables = {
+const globalVars = {
+  blackStarts: [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22],
+  whiteStarts: [41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63],
   pieceSelected: false,
   validLetters: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
   validNumbers: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -29,8 +28,8 @@ const getDiagonals = (id) => {
 
   // Error handling; we don't want positions outside the board
   const checked = [u_l, u_r, l_l, l_r].map((pos) => {
-    if (!globalVariables.validLetters.includes(pos[0]) || 
-        !globalVariables.validNumbers.includes(pos[1])) {
+    if (!globalVars.validLetters.includes(pos[0]) || 
+        !globalVars.validNumbers.includes(pos[1])) {
       return null;
     } else {
       return pos.join('-');
@@ -79,24 +78,24 @@ const getValidMoves = (piece, position) => {
 
 const movePiece = (event) => {
   const destinationSquare = event.target;
-  const originSquare = document.querySelector(`#${globalVariables.activePosition}`)
+  const originSquare = document.querySelector(`#${globalVars.activePosition}`)
   // Remove piece from origin square, but save its color
   const piece = originSquare.childNodes[0]
   const pieceColor = piece.classList[0].split('-')[0]
   originSquare.removeChild(piece)
   // Place piece on destination square
-  const newPiece = spawnPiece(pieceColor)
-  destinationSquare.appendChild(newPiece)
-  globalVariables.pieceSelected = false;
-  globalVariables.activePiece = null;
+  const newPiece = spawnPiece(pieceColor);
+  destinationSquare.appendChild(newPiece);
+  globalVars.pieceSelected = false;
+  globalVars.activePiece = null;
   flushTileHighlights();
-  destinationSquare.setAttribute('onclick', '')
 }
 
 const flushTileHighlights = () => {
   const squares = [...document.querySelectorAll('.selected-tile')];
   squares.forEach((square) => {
     square.classList.toggle('selected-tile');
+    square.removeAttribute('onclick');
   })
 }
 
@@ -106,9 +105,9 @@ const activatePiece = (e) => {
   let piece = e.target;
   let position = piece.parentElement;
 
-  if (globalVariables.pieceSelected === false) {
-    globalVariables.pieceSelected = true;
-    globalVariables.activePosition = position.id;
+  if (globalVars.pieceSelected === false) {
+    globalVars.pieceSelected = true;
+    globalVars.activePosition = position.id;
     // Toggle the styles to demonstrate activation
     position.classList.toggle('selected-tile');
     // Light up valid moves
@@ -116,8 +115,8 @@ const activatePiece = (e) => {
 
   } else if ([...position.classList].includes('selected-tile')) {
     flushTileHighlights();
-    globalVariables.pieceSelected = false;
-    globalVariables.activePiece = null
+    globalVars.pieceSelected = false;
+    globalVars.activePiece = null
   }
 }
 
@@ -150,10 +149,10 @@ const initialiseBoard = () => {
 
   // Place pieces on appropriate squares
   for (let i = 0; i < squares.length; i++) {
-    if (blackStarts.includes(i)) {
+    if (globalVars.blackStarts.includes(i)) {
       let piece = spawnPiece('black');
       squares[i].appendChild(piece);
-    } else if (whiteStarts.includes(i)) {
+    } else if (globalVars.whiteStarts.includes(i)) {
       let piece = spawnPiece('white');
       squares[i].appendChild(piece);
     }
