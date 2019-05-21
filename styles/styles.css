@@ -9,6 +9,10 @@ h1 {
   letter-spacing: -2px;
 }
 
+button {
+  margin: 10px;
+}
+
 header {
   background: #9898f4;
   color: #000000;

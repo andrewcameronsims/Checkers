@@ -18,22 +18,21 @@ const prevChar = (char) => {
 }
 
 const getDiagonals = (piece, id) => {
-  console.log(id)
-  const position = id.split('/');
+  const position = id.split('-');
 
   // Get diagonals
-  const u_l = [prevChar(position[0]), position[1] - 1];
-  const u_r = [prevChar(position[0]), position[1] + 1];
-  const l_l = [nextChar(position[0]), position[1] - 1];
-  const l_r = [nextChar(position[0]), position[1] + 1];
+  const u_l = [prevChar(position[0]), parseInt(position[1]) - 1];
+  const u_r = [prevChar(position[0]), parseInt(position[1]) + 1];
+  const l_l = [nextChar(position[0]), parseInt(position[1]) - 1];
+  const l_r = [nextChar(position[0]), parseInt(position[1]) + 1];
 
-  // Error handling; we don't want positions off the board
+  // Error handling; we don't want positions outside the board
   const checked = [u_l, u_r, l_l, l_r].map((pos) => {
     if (!globalVariables.validLetters.includes(pos[0]) || 
         !globalVariables.validNumbers.includes(pos[1])) {
       return undefined;
     } else {
-      return pos.join('/');
+      return pos.join('-');
     }
   })
 
@@ -58,7 +57,7 @@ const getValidMoves = (piece, position) => {
   };
 
   // Get the elements themselves from the IDs
-  positions.map((pos) => {
+  positions = positions.map((pos) => {
     return document.querySelector(`#${pos}`)
   })
 
@@ -68,7 +67,14 @@ const getValidMoves = (piece, position) => {
     square.classList.toggle('selected-tile');
   });
   // Can jump forward diagonally if an enemy piece present
-  
+  // TODO
+}
+
+const flushTileHighlights = () => {
+  const squares = [...document.querySelectorAll('.selected-tile')];
+  squares.forEach((square) => {
+    square.classList.toggle('selected-tile');
+  })
 }
 
 const activatePiece = (e) => {
@@ -84,7 +90,7 @@ const activatePiece = (e) => {
     getValidMoves(piece, position);
 
   } else if ([...position.classList].includes('selected-tile')) {
-    position.classList.toggle('selected-tile');
+    flushTileHighlights();
     globalVariables.pieceSelected = false;
   }
 }
