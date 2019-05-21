@@ -5,6 +5,10 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+h1 {
+  letter-spacing: -2px;
+}
+
 header {
   background: #9898f4;
   color: #000000;
@@ -12,7 +16,7 @@ header {
 }
 
 .container {
-  height: 600px;
+  height: 550px;
 }
 
 .left-side {
