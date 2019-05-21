@@ -17,10 +17,14 @@ const prevChar = (char) => {
 
 const getDiagonals = (piece, id) => {
   const position = id.split('/');
-  const upper_left = [nextChar(position[0]), position[1]].join('/');
-  const upper_right = [nextChar(position[0]), position[1]].join('/');
-  const lower_left = [prevChar(position[0]), position[1]].join('/');
-  const lower_right = [prevChar(position[0]), position[1]].join('/');
+  // Error handling and sanitisation
+  
+
+  // Get diagonals
+  const upper_left = [nextChar(position[0]), position[1] - 1].join('/');
+  const upper_right = [nextChar(position[0]), position[1] + 1].join('/');
+  const lower_left = [prevChar(position[0]), position[1] - 1].join('/');
+  const lower_right = [prevChar(position[0]), position[1] + 1].join('/');
   return [upper_left, upper_right, lower_left, lower_right]
 }
 
