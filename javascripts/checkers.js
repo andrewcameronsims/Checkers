@@ -5,10 +5,28 @@ const globalVariables = {
   pieceSelected: false,
 }
 
-const getValidMoves = (position) => {
-  // This is a stub for finding valid moves
-  // Moving forward diagonally if a piece is not in the way
-  // Jumping forward diagonally over an enemy piece
+const getValidMoves = (piece, position) => {
+  // Get the two forward diagonal positions
+  let squareList = [...document.querySelectorAll('.square')];
+  let position_index = squareList.findIndex((sq) => {
+    return sq === position;
+  });
+  if (piece.classList.contains('white-piece')) {
+    let positions = [position_index - 7, position_index - 9];
+  } else if (piece.classList.contains('black-piece')){
+    let positions = [position_index + 7, position_index + 9];
+  };
+
+  positions.map((index) => {
+    return squarelist[index]
+  })
+  // Add visual cues and onclicks to the valid positions
+  // Can move forward diagonally if a piece is not in the way
+  positions.forEach(square => {
+    return square.classList.toggle('selected-tile');
+  });
+  // Can jump forward diagonally if an enemy piece present
+  
 }
 
 const activatePiece = (e) => {
@@ -20,9 +38,8 @@ const activatePiece = (e) => {
     globalVariables.pieceSelected = true;
     // Toggle the styles to demonstrate activation
     position.classList.toggle('selected-tile');
-
     // Light up valid moves
-    getValidMoves(position);
+    getValidMoves(piece, position);
 
   } else if ([...position.classList].includes('selected-tile')) {
     position.classList.toggle('selected-tile');
@@ -38,7 +55,7 @@ const spawnPiece = (color) => {
 }
 
 const removePieces = () => {
-  // Get arrays including all pieces
+  // Get arrays that include all pieces
   let blacks = [...document.querySelectorAll('.black-piece')];
   let whites = [...document.querySelectorAll('.white-piece')];
 
