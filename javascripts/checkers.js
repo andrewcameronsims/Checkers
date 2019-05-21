@@ -1,8 +1,14 @@
 const blackStarts = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22]
 const whiteStarts = [41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63]
 
+const globalVariables = {
+  pieceSelected: false,
+}
+
 const getValidMoves = (position) => {
   // This is a stub for finding valid moves
+  // Moving forward diagonally if a piece is not in the way
+  // Jumping forward diagonally over an enemy piece
 }
 
 const activatePiece = (e) => {
@@ -10,15 +16,24 @@ const activatePiece = (e) => {
   let piece = e.target;
   let position = piece.parentElement;
 
-  // Toggle the styles to demonstrate activation
-  position.classList.toggle('selected-piece');
-  validMoves = getValidMoves(position);
+  if (globalVariables.pieceSelected === false) {
+    globalVariables.pieceSelected = true;
+    // Toggle the styles to demonstrate activation
+    position.classList.toggle('selected-tile');
+
+    // Light up valid moves
+    getValidMoves(position);
+
+  } else if ([...position.classList].includes('selected-tile')) {
+    position.classList.toggle('selected-tile');
+    globalVariables.pieceSelected = false;
+  }
 }
 
 const spawnPiece = (color) => {
   let piece = document.createElement('div');
   piece.classList.toggle(`${color}-piece`);
-  piece.setAttribute('onclick', 'activatePiece()');
+  piece.setAttribute('onclick', 'activatePiece(event)');
   return piece;
 }
 
@@ -42,7 +57,7 @@ const initialiseBoard = () => {
   // Get all squares
   const squares = [...document.querySelectorAll('.square')]
 
-  // Place pieces on all squares
+  // Place pieces on appropriate squares
   for (let i = 0; i < squares.length; i++) {
     if (blackStarts.includes(i)) {
       let piece = spawnPiece('black');

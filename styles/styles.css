@@ -72,8 +72,9 @@ header {
 
 /* Active Styles */
 
-.selected-piece {
-  background: blue
+.selected-tile {
+  background: #9c9cf8;
+  border: 1px solid blue;
 }
 
 .potential-move {
