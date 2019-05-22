@@ -46,13 +46,22 @@ const getDiagonals = (id) => {
 
 // Game Logic
 
+const OccupiedBy = (square) => {
+  if (square.hasChildNodes()) {
+    return square.children[0].classList[0];
+  } else {
+    return null;
+  }
+}
+
 const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
   const diagonals = getDiagonals(position.id);
-  let positions
-  if (piece.classList.contains('white-piece')) {
+  const pieceColor = piece.classList[0]
+  let positions;
+  if (pieceColor === 'white-piece') {
     positions = [diagonals.u_l, diagonals.u_r];
-  } else if (piece.classList.contains('black-piece')){
+  } else if (pieceColor === 'black-piece') {
     positions = [diagonals.l_l, diagonals.l_r];
   };
   
@@ -69,8 +78,13 @@ const getValidMoves = (piece, position) => {
   // Add visual cues and onclicks to the valid positions
   // Can move forward diagonally if a piece is not in the way
   positions.forEach((square) => {
-    square.classList.toggle('selected-tile');
-    square.setAttribute('onclick', 'movePiece(event)')
+    const occupied = OccupiedBy(square)
+    if (occupied) {
+      square.classList.toggle('occupied-tile')
+    } else {
+      square.classList.toggle('selected-tile');
+      square.setAttribute('onclick', 'movePiece(event)')
+    }
   });
   // Can jump forward diagonally if an enemy piece present
   // TODO
@@ -92,17 +106,16 @@ const movePiece = (event) => {
 }
 
 const flushTileHighlights = () => {
-  const squares = [...document.querySelectorAll('.occupied-tile')];
+  let squares = [...document.querySelectorAll('.occupied-tile')];
   squares.forEach((square) => {
     square.classList.toggle('occupied-tile');
   })
-  const squares = [...document.querySelectorAll('.selected-tile')];
+  squares = [...document.querySelectorAll('.selected-tile')];
   squares.forEach((square) => {
     square.classList.toggle('selected-tile');
     square.removeAttribute('onclick');
   })
 }
-
 
 const activatePiece = (e) => {
   // Get the piece and the space it is on
