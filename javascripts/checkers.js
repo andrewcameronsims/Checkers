@@ -44,9 +44,29 @@ const getDiagonals = (id) => {
   }
 }
 
+const getSkip = (square, piece) => {
+  // Given two tiles, find the next in the vector
+  const originTile = piece.parentElement.id;
+  const nextTile = square.id;
+  let x, y
+  // Given this vector, x-value is...
+  if (originTile[2] > nextTile[2]) {
+    x = nextTile[2] - 1;
+  } else {
+    x = nextTile[2] + 1;
+  }
+  // and the y-value is...
+  if (originTile[0] > nextTile[0]) {
+    y = prevChar(nextTile[0])
+  } else {
+    y = nextChar(nextTile[0])
+  }
+  return document.querySelector(`#${y}-${x}`);
+}
+
 // Game Logic
 
-const OccupiedBy = (square) => {
+const occupiedBy = (square) => {
   if (square.hasChildNodes()) {
     return square.children[0].classList[0];
   } else {
@@ -77,9 +97,10 @@ const getValidMoves = (piece, position) => {
 
   // Add visual cues and onclicks to the valid positions
   // Can move forward diagonally if a piece is not in the way
-  // REFACTOR THIS! IT'S DISGUSTING!
   positions.forEach((square) => {
-    const occupied = OccupiedBy(square) // Is either square occupied?
+    const occupied = occupiedBy(square) // Is either square occupied?
+    
+    // REFACTOR THIS! IT'S DISGUSTING!
     if (occupied === null) {
       square.classList.toggle('selected-tile');
       square.setAttribute('onclick', 'movePiece(event)')
@@ -92,15 +113,14 @@ const getValidMoves = (piece, position) => {
         occupied !== null) {
       // find the skip tile
       const skipTile = getSkip(square, piece)
-      // put movePiece onclicks on the skip tile
-      // light up the relevant skip tile
+      if (!occupiedBy(skipTile)) {
+        // put movePiece onclicks on the skip tile
+        skipTile.setAttribute('onclick', 'movePiece(event)')
+        // light up the relevant skip tile
+        skipTile.classList.toggle('selected-tile');
+      }
     }
   });
-}
-
-const getSkip = (square, piece) => {
-  // Given two tiles, find the next in the vector
-  
 }
 
 const movePiece = (event) => {
