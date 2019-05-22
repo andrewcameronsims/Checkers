@@ -71,8 +71,6 @@ const getIntermediate = (start, end) => {
   start = start.id;
   end = end.id;
 
-  console.log(start, end)
-
   let x, y;
   if (start[0] > end[0]) {
     y = prevChar(start[0]);
@@ -84,7 +82,6 @@ const getIntermediate = (start, end) => {
   } else {
     x = parseInt(start[2]) + 1;
   };
-  console.log(`#${y}-${x}`)
   return document.querySelector(`#${y}-${x}`);
 }
 
