@@ -81,6 +81,11 @@ header {
   border: 1px solid blue;
 }
 
+.occupied-tile {
+  background: #ff7b7b;
+  border: 1px solid red;
+}
+
 .potential-move {
   background: lightskyblue;
 }

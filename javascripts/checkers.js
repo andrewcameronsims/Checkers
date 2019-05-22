@@ -92,6 +92,10 @@ const movePiece = (event) => {
 }
 
 const flushTileHighlights = () => {
+  const squares = [...document.querySelectorAll('.occupied-tile')];
+  squares.forEach((square) => {
+    square.classList.toggle('occupied-tile');
+  })
   const squares = [...document.querySelectorAll('.selected-tile')];
   squares.forEach((square) => {
     square.classList.toggle('selected-tile');
