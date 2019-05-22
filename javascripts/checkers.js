@@ -126,13 +126,24 @@ const getValidMoves = (piece, position) => {
 const movePiece = (event) => {
   const destinationSquare = event.target;
   const originSquare = document.querySelector(`#${globalVars.activePosition}`)
+  
   // Remove piece from origin square, but save its color
   const piece = originSquare.childNodes[0]
   const pieceColor = piece.classList[0].split('-')[0]
   originSquare.removeChild(piece)
+
   // Place piece on destination square
   const newPiece = spawnPiece(pieceColor);
   destinationSquare.appendChild(newPiece);
+
+  // Remove piece if it's been jumped over
+  const diff = Math.abs(destinationSquare.id[2] - originSquare.id[2])
+  if (diff > 1) {
+    // Remove the skipped piece
+    const deadPiece = getIntermediate();
+  }
+
+  // Reset global variables
   globalVars.pieceSelected = false;
   globalVars.activePiece = null;
   flushTileHighlights();
