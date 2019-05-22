@@ -99,7 +99,8 @@ const getValidMoves = (piece, position) => {
 }
 
 const getSkip = (square, piece) => {
-
+  // Given two tiles, find the next in the vector
+  
 }
 
 const movePiece = (event) => {
