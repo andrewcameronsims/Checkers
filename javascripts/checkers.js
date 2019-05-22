@@ -77,14 +77,15 @@ const getValidMoves = (piece, position) => {
 
   // Add visual cues and onclicks to the valid positions
   // Can move forward diagonally if a piece is not in the way
+  // REFACTOR THIS! IT'S DISGUSTING!
   positions.forEach((square) => {
     const occupied = OccupiedBy(square)
-    if (occupied) {
-      square.classList.toggle('occupied-tile')
-    } else {
+    if (occupied === null) {
       square.classList.toggle('selected-tile');
       square.setAttribute('onclick', 'movePiece(event)')
-    }
+    } else if (occupied === pieceColor) {
+      null
+    } else { square.classList.toggle('occupied-tile') }
   });
   // Can jump forward diagonally if an enemy piece present
   // TODO
