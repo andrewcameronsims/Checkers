@@ -82,6 +82,7 @@ const getIntermediate = (start, end) => {
   } else {
     x = parseInt(start[2]) + 1;
   };
+  console.log(`#${y}-${x}`)
   return document.querySelector(`#${y}-${x}`);
 }
 
