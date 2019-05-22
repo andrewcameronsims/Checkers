@@ -79,16 +79,27 @@ const getValidMoves = (piece, position) => {
   // Can move forward diagonally if a piece is not in the way
   // REFACTOR THIS! IT'S DISGUSTING!
   positions.forEach((square) => {
-    const occupied = OccupiedBy(square)
+    const occupied = OccupiedBy(square) // Is either square occupied?
     if (occupied === null) {
       square.classList.toggle('selected-tile');
       square.setAttribute('onclick', 'movePiece(event)')
     } else if (occupied === pieceColor) {
       null
     } else { square.classList.toggle('occupied-tile') }
+
+    // Can jump forward diagonally if an enemy piece present
+    if (occupied !== pieceColor &&
+        occupied !== null) {
+      // find the skip tile
+      const skipTile = getSkip(square, piece)
+      // put movePiece onclicks on the skip tile
+      // light up the relevant skip tile
+    }
   });
-  // Can jump forward diagonally if an enemy piece present
-  // TODO
+}
+
+const getSkip = (square, piece) => {
+
 }
 
 const movePiece = (event) => {
