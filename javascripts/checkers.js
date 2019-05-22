@@ -71,13 +71,15 @@ const getIntermediate = (start, end) => {
   start = start.id;
   end = end.id;
 
+  console.log(start, end)
+
   let x, y;
   if (start[0] > end[0]) {
     y = prevChar(start[0]);
   } else {
     y = nextChar(start[0]);
   };
-  if (start[2] > start[2]) {
+  if (start[2] > end[2]) {
     x = parseInt(start[2]) - 1;
   } else {
     x = parseInt(start[2]) + 1;
