@@ -1,3 +1,6 @@
+// Document alias
+const d = document;
+
 const globalVars = {
   blackStarts: [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22],
   whiteStarts: [41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63],
@@ -61,6 +64,24 @@ const getSkip = (square, piece) => {
   } else {
     y = nextChar(nextTile[0])
   }
+  return document.querySelector(`#${y}-${x}`);
+}
+
+const getIntermediate = (start, end) => {
+  start = start.id;
+  end = end.id;
+
+  let x, y;
+  if (start[0] > end[0]) {
+    y = prevChar(start[0]);
+  } else {
+    y = nextChar(start[0]);
+  };
+  if (start[2] > start[2]) {
+    x = parseInt(start[2]) - 1;
+  } else {
+    x = parseInt(start[2]) + 1;
+  };
   return document.querySelector(`#${y}-${x}`);
 }
 
@@ -140,7 +161,9 @@ const movePiece = (event) => {
   const diff = Math.abs(destinationSquare.id[2] - originSquare.id[2])
   if (diff > 1) {
     // Remove the skipped piece
-    const deadPiece = getIntermediate();
+    const deadSquare = getIntermediate(originSquare, destinationSquare);
+    const deadPiece = deadSquare.childNodes[0]
+    deadSquare.removeChild(deadPiece);
   }
 
   // Reset global variables
