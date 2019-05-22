@@ -51,9 +51,9 @@ const getSkip = (square, piece) => {
   let x, y
   // Given this vector, x-value is...
   if (originTile[2] > nextTile[2]) {
-    x = nextTile[2] - 1;
+    x = parseInt(nextTile[2]) - 1;
   } else {
-    x = nextTile[2] + 1;
+    x = parseInt(nextTile[2]) + 1;
   }
   // and the y-value is...
   if (originTile[0] > nextTile[0]) {
