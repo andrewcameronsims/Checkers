@@ -88,7 +88,6 @@ class GridHelper {
     return document.querySelector(`#${y}${x}`);
   }
 }
-
 const gh = new GridHelper
 
 // Game Logic
@@ -126,12 +125,15 @@ const getValidMoves = (piece, position) => {
   // Can move forward diagonally if a piece is not in the way
   positions.forEach((square) => {
     const occupied = occupiedBy(square) // Is either square occupied?
-    // REFACTOR THIS! IT'S DISGUSTING!
+
+    // Valid move if unoccupied
     if (occupied === null) {
       square.classList.toggle('selected-tile');
       square.setAttribute('onclick', 'movePiece(event)')
+    // Do nothing if occupied by friendly
     } else if (occupied === pieceColor) {
       null
+    // Indicate if occupied by enemy
     } else { square.classList.toggle('occupied-tile') }
 
     // Can jump forward diagonally if an enemy piece present
@@ -169,6 +171,10 @@ const movePiece = (event) => {
     const deadSquare = gh.getIntermediate(originSquare, destinationSquare);
     const deadPiece = deadSquare.childNodes[0]
     deadSquare.removeChild(deadPiece);
+    
+    // Check if another capture is possible
+
+    // If so, flush highlights and re-activate the piece
   }
 
   // Reset global variables
