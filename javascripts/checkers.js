@@ -111,21 +111,20 @@ const getValidMoves = (piece, position) => {
     positions = [diagonals.l_l, diagonals.l_r];
   };
   
-  // Get rid of nulls
-  positions = positions.filter((pos) => {
-    return pos
-  })
-
   // Get the elements themselves from the IDs
   positions = positions.map((pos) => {
     return document.querySelector(`#${pos}`)
   })
 
-  // Add visual cues and onclicks to the valid positions
+  // Get rid of nulls
+  positions = positions.filter((pos) => {
+    return pos
+  })
+
+  // Add visual cues and onclicks to the valid positions //
   // Can move forward diagonally if a piece is not in the way
   positions.forEach((square) => {
     const occupied = occupiedBy(square) // Is either square occupied?
-
     // Valid move if unoccupied
     if (occupied === null) {
       square.classList.toggle('selected-tile');
@@ -141,7 +140,7 @@ const getValidMoves = (piece, position) => {
         occupied !== null) {
       // find the skip tile
       const skipTile = gh.getSkip(square, piece)
-      if (!occupiedBy(skipTile)) {
+      if (!occupiedBy(skipTile)) {  
         // put movePiece onclicks on the skip tile
         skipTile.setAttribute('onclick', 'movePiece(event)')
         // light up the relevant skip tile
