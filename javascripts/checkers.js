@@ -5,85 +5,91 @@ const globalVars = {
   blackStarts: [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22],
   whiteStarts: [41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61, 63],
   pieceSelected: false,
-  validLetters: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-  validNumbers: [1, 2, 3, 4, 5, 6, 7, 8],
+  validY: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+  validX: [1, 2, 3, 4, 5, 6, 7, 8],
   activePosition: null,
 };
 
 // Grid Helpers
 
-const nextChar = (char) => {
-  return String.fromCharCode(char.charCodeAt(0) + 1);
-}
-
-const prevChar = (char) => {
-  return String.fromCharCode(char.charCodeAt(0) - 1);
-}
-
-const getDiagonals = (id) => {
-  const position = id.split('-');
-
-  // Get diagonals
-  const u_l = [prevChar(position[0]), parseInt(position[1]) - 1];
-  const u_r = [prevChar(position[0]), parseInt(position[1]) + 1];
-  const l_l = [nextChar(position[0]), parseInt(position[1]) - 1];
-  const l_r = [nextChar(position[0]), parseInt(position[1]) + 1];
-
-  // Error handling; we don't want positions outside the board
-  const checked = [u_l, u_r, l_l, l_r].map((pos) => {
-    if (!globalVars.validLetters.includes(pos[0]) || 
-        !globalVars.validNumbers.includes(pos[1])) {
-      return null;
-    } else {
-      return pos.join('-');
+class GridHelper {
+  nextY(char) {
+    const next = String.fromCharCode(char.charCodeAt(0) + 1);
+    if (globalVars.validY.includes(next)) {
+      return next;
     }
-  })
+  }
 
-  return {
-    u_l: checked[0],
-    u_r: checked[1],
-    l_l: checked[2],
-    l_r: checked[3],
+  prevY(char) {
+    const prev = String.fromCharCode(char.charCodeAt(0) - 1);
+    if (globalVars.validY.includes(prev)) {
+      return prev;
+    }
+  }
+
+  nextX(num) {
+    const next = parseInt(num) + 1;
+    if (globalVars.validX.includes(next)) {
+      return next;
+    }
+  }
+
+  prevX(num) {
+    const prev = parseInt(num) - 1;
+    if (globalVars.validX.includes(prev)) {
+      return prev;
+    }
+  }
+
+  getDiagonals(id) {
+    return {
+      u_l: [this.prevY(id[0]), this.prevX(id[1])].join(''),
+      u_r: [this.prevY(id[0]), this.nextX(id[1])].join(''),
+      l_l: [this.nextY(id[0]), this.prevX(id[1])].join(''),
+      l_r: [this.nextY(id[0]), this.nextX(id[1])].join(''),
+    }
+  }
+
+  getSkip(square, piece) {
+    // Given two tiles, find the next in the vector
+    const originTile = piece.parentElement.id;
+    const nextTile = square.id;
+    let x, y
+    // Given this vector, x-value is...
+    if (originTile[1] > nextTile[1]) {
+      x = this.prevX(nextTile[1]);
+    } else {
+      x = this.nextX(nextTile[1]);
+    }
+    // and the y-value is...
+    if (originTile[0] > nextTile[0]) {
+      y = this.prevY(nextTile[0])
+    } else {
+      y = this.nextY(nextTile[0])
+    }
+    return document.querySelector(`#${y}${x}`);
+  }
+
+  getIntermediate(start, end) {
+    start = start.id;
+    end = end.id;
+  
+    let x, y;
+    if (start[0] > end[0]) {
+      y = this.prevY(start[0]);
+    } else {
+      y = this.nextY(start[0]);
+    };
+    if (start[2] > end[2]) {
+      x = parseInt(start[2]) - 1;
+    } else {
+      x = parseInt(start[2]) + 1;
+    };
+    return document.querySelector(`#${y}-${x}`);
   }
 }
 
-const getSkip = (square, piece) => {
-  // Given two tiles, find the next in the vector
-  const originTile = piece.parentElement.id;
-  const nextTile = square.id;
-  let x, y
-  // Given this vector, x-value is...
-  if (originTile[2] > nextTile[2]) {
-    x = parseInt(nextTile[2]) - 1;
-  } else {
-    x = parseInt(nextTile[2]) + 1;
-  }
-  // and the y-value is...
-  if (originTile[0] > nextTile[0]) {
-    y = prevChar(nextTile[0])
-  } else {
-    y = nextChar(nextTile[0])
-  }
-  return document.querySelector(`#${y}-${x}`);
-}
-
-const getIntermediate = (start, end) => {
-  start = start.id;
-  end = end.id;
-
-  let x, y;
-  if (start[0] > end[0]) {
-    y = prevChar(start[0]);
-  } else {
-    y = nextChar(start[0]);
-  };
-  if (start[2] > end[2]) {
-    x = parseInt(start[2]) - 1;
-  } else {
-    x = parseInt(start[2]) + 1;
-  };
-  return document.querySelector(`#${y}-${x}`);
-}
+const gh = new GridHelper
 
 // Game Logic
 
@@ -97,7 +103,7 @@ const occupiedBy = (square) => {
 
 const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
-  const diagonals = getDiagonals(position.id);
+  const diagonals = gh.getDiagonals(position.id);
   const pieceColor = piece.classList[0]
   let positions;
   if (pieceColor === 'white-piece') {
@@ -120,7 +126,6 @@ const getValidMoves = (piece, position) => {
   // Can move forward diagonally if a piece is not in the way
   positions.forEach((square) => {
     const occupied = occupiedBy(square) // Is either square occupied?
-    
     // REFACTOR THIS! IT'S DISGUSTING!
     if (occupied === null) {
       square.classList.toggle('selected-tile');
@@ -133,7 +138,7 @@ const getValidMoves = (piece, position) => {
     if (occupied !== pieceColor &&
         occupied !== null) {
       // find the skip tile
-      const skipTile = getSkip(square, piece)
+      const skipTile = gh.getSkip(square, piece)
       if (!occupiedBy(skipTile)) {
         // put movePiece onclicks on the skip tile
         skipTile.setAttribute('onclick', 'movePiece(event)')
@@ -161,7 +166,7 @@ const movePiece = (event) => {
   const diff = Math.abs(destinationSquare.id[2] - originSquare.id[2])
   if (diff > 1) {
     // Remove the skipped piece
-    const deadSquare = getIntermediate(originSquare, destinationSquare);
+    const deadSquare = gh.getIntermediate(originSquare, destinationSquare);
     const deadPiece = deadSquare.childNodes[0]
     deadSquare.removeChild(deadPiece);
   }
