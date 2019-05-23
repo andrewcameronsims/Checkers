@@ -63,9 +63,9 @@ class GridHelper {
     }
     // and the y-value is...
     if (originTile[0] > nextTile[0]) {
-      y = this.prevY(nextTile[0])
+      y = this.prevY(nextTile[0]);
     } else {
-      y = this.nextY(nextTile[0])
+      y = this.nextY(nextTile[0]);
     }
     return document.querySelector(`#${y}${x}`);
   }
@@ -80,12 +80,12 @@ class GridHelper {
     } else {
       y = this.nextY(start[0]);
     };
-    if (start[2] > end[2]) {
-      x = parseInt(start[2]) - 1;
+    if (start[1] > end[1]) {
+      x = this.prevX(start[1]);
     } else {
-      x = parseInt(start[2]) + 1;
+      x = this.nextX(start[1]);
     };
-    return document.querySelector(`#${y}-${x}`);
+    return document.querySelector(`#${y}${x}`);
   }
 }
 
@@ -163,7 +163,7 @@ const movePiece = (event) => {
   destinationSquare.appendChild(newPiece);
 
   // Remove piece if it's been jumped over
-  const diff = Math.abs(destinationSquare.id[2] - originSquare.id[2])
+  const diff = Math.abs(destinationSquare.id[1] - originSquare.id[1])
   if (diff > 1) {
     // Remove the skipped piece
     const deadSquare = gh.getIntermediate(originSquare, destinationSquare);
@@ -250,5 +250,6 @@ const initialiseBoard = () => {
 
 const resetGame = () => {
   removePieces();
+  flushTileHighlights();
   initialiseBoard();
 }
