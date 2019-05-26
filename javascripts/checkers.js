@@ -170,22 +170,25 @@ const movePiece = (event) => {
     const deadSquare = gh.getIntermediate(originSquare, destinationSquare);
     const deadPiece = deadSquare.childNodes[0]
     deadSquare.removeChild(deadPiece);
-    
-    // Check if another capture is possible
-
-    // If so, flush highlights and re-activate the piece
   }
-  // Check if it's reached the end of the board
-  checkCrown(piece, pieceColor)
-
   // Reset global variables
   globalVars.pieceSelected = false;
   globalVars.activePiece = null;
   flushTileHighlights();
+  // Check if it's reached the end of the board
+  checkCrown(destinationSquare, pieceColor)
 }
 
-const checkCrown = (piece, pieceColor) => {
-  
+const checkCrown = (square, pieceColor) => {
+  if (pieceColor === 'white') {
+    if (square.id.match(/a./)) {
+      crownPiece(square.childNodes[0]);
+    }
+  } else {
+    if (square.id.match(/h./)) {
+      crownPiece(square.childNodes[0]);
+    }
+  }
 }
 
 const flushTileHighlights = () => {
