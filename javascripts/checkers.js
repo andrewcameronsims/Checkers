@@ -175,11 +175,17 @@ const movePiece = (event) => {
 
     // If so, flush highlights and re-activate the piece
   }
+  // Check if it's reached the end of the board
+  checkCrown(piece, pieceColor)
 
   // Reset global variables
   globalVars.pieceSelected = false;
   globalVars.activePiece = null;
   flushTileHighlights();
+}
+
+const checkCrown = (piece, pieceColor) => {
+  
 }
 
 const flushTileHighlights = () => {
@@ -257,4 +263,10 @@ const resetGame = () => {
   removePieces();
   flushTileHighlights();
   initialiseBoard();
+}
+
+const crownPiece = (piece) => {
+  const crown = d.createElement('div');
+  crown.classList.toggle('crown');
+  piece.appendChild(crown);
 }
