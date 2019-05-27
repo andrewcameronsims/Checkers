@@ -104,7 +104,12 @@ const getValidMoves = (piece, position) => {
   // Get the two forward diagonal positions
   const diagonals = gh.getDiagonals(position.id);
   const pieceColor = piece.classList[0]
-  let positions;
+  let positions, crowned;
+  if (piece.hasChildNodes()) {
+    // Keep track of crowned status
+    crowned = true;
+    positions = diagonals;
+  }
   if (pieceColor === 'white-piece') {
     positions = [diagonals.u_l, diagonals.u_r];
   } else if (pieceColor === 'black-piece') {
